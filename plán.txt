@@ -1,0 +1,5 @@
+Mám v plánu udělat:
+Krmítko které bude v určité časy dávkovat krmivo mým morčatům.
+Chci to udělat tak že krmivo se bude davkovat určitý čas. 
+Až zvládnu toto chci udělat at to jde nastavit přes nějakou jednoduchou obrazovku. 
+Pokud zvladnu i toto tak by to mělo dávat signály např že došlo krmivo v zasobníku apod.
