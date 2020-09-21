@@ -16,6 +16,7 @@ http://andres-leon.blogspot.com/2009/04/my-first-arduino-project-diy-automatic.h
 https://www.hackster.io/pejackson/web-enabled-candy-dispenser-90f743 80%
 https://www.youtube.com/watch?v=eY82cOd7JPk 40%
 https://www.youtube.com/watch?v=ubis5RRCmRA 30%
+https://www.instructables.com/id/Automatic-Arduino-Powered-Pet-Feeder/
 
 
 Odkaz na tabulku pánů: https://docs.google.com/spreadsheets/d/1uFp6gwQVRI2MggyRNMP-jF5-l7yY4J3D48s-j0oxwsM/edit?usp=sharing
