@@ -19,3 +19,4 @@ https://www.youtube.com/watch?v=ubis5RRCmRA 30%
 
 
 Odkaz na tabulku pánů: https://docs.google.com/spreadsheets/d/1uFp6gwQVRI2MggyRNMP-jF5-l7yY4J3D48s-j0oxwsM/edit?usp=sharing
+Odkaz na díly: https://arduino-shop.cz/uzivatel/kosik.php?
