@@ -26,3 +26,5 @@ Odkaz na díly: https://arduino-shop.cz/uzivatel/kosik.php?kosik%5B8%5D%5B1581%5
 28.9-Nainstaloval jsem VScode a zítra mi dojdou díly.
 29.9-Díly došly.
 
+konzultovat napájení 
+konzultovat podávání
