@@ -32,3 +32,9 @@ konzultovat podávání
  json datetime planner
  arduino json
  manipulace s json
+ 
+ 
+ 
+ Duležité !!!Duležité !!!Duležité !!!Duležité !!!Duležité !!!Duležité !!!Duležité !!!Duležité !!!Duležité !!!Duležité !!!Duležité !!!Duležité !!!Duležité !!!Duležité !!!
+ 
+ Funguje mi vypis času pres konzoli, a blikani ledkou skrze web server pokusim se zprovoznit vypis času na web serveru a nasledně ho využít k ovládání
