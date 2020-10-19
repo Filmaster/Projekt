@@ -28,3 +28,7 @@ Odkaz na díly: https://arduino-shop.cz/uzivatel/kosik.php?kosik%5B8%5D%5B1581%5
 
 konzultovat napájení 
 konzultovat podávání
+ ntp knihovna
+ json datetime planner
+ arduino json
+ manipulace s json
