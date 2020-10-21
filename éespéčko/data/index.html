@@ -5,11 +5,37 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" href="data:,">
   <link rel="stylesheet" type="text/css" href="style.css">
+
 </head>
 <body>
-  <h1>ESP32 Web Server</h1>
-  <p>Ledka 1: <strong> %STATE%</strong></p>
+  <h1> Web Server</h1>
+  <p>meme 1: <strong> %STATE%</strong></p>
   <p><a href="/on"><button class="button">ON</button></a></p>
   <p><a href="/off"><button class="button button2">OFF</button></a></p>
+
+  <title>ESP Input Form</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head><body>
+  <form action="/get">
+    input1: <input type="text" name="input1">
+    <input type="submit" value="Submit">
+  </form><br>
+  <form action="/get">
+    input2: <input type="text" name="input2">
+    <input type="submit" value="Submit">
+  </form><br>
+  <form action="/get">
+    input3: <input type="text" name="input3">
+    <input type="submit" value="Submit">
+  </form>
+
+
+
+  <h1>Vypis času.</h1>
+  <p>Soucasny cas je: <strong> %A, %B %d %Y %H:%M:%S </strong></p>
 </body>
 </html>
+
+
+
+
