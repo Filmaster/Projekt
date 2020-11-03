@@ -9,31 +9,44 @@
 </head>
 <body>
   <h1> Web Server</h1>
-  <p>meme 1: <strong> %STATE%</strong></p>
+  <p>ledka 1: <strong> %STATE%</strong></p>
   <p><a href="/on"><button class="button">ON</button></a></p>
   <p><a href="/off"><button class="button button2">OFF</button></a></p>
+
+
+  <span id="hod">%h%</span>
 
   <title>ESP Input Form</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   </head><body>
   <form action="/get">
     input1: <input type="text" name="input1">
-    <input type="submit" value="Submit">
-  </form><br>
-  <form action="/get">
+
     input2: <input type="text" name="input2">
-    <input type="submit" value="Submit">
-  </form><br>
-  <form action="/get">
-    input3: <input type="text" name="input3">
-    <input type="submit" value="Submit">
+
+    input3: <input type="text" name="input3"> 
+     <input type="submit" value="Submit">
   </form>
-
-
-
-  <h1>Vypis času.</h1>
-  <p>Soucasny cas je: <strong> %A, %B %d %Y %H:%M:%S </strong></p>
+  
 </body>
+
+
+<script>
+
+  
+  setInterval(function ( ) {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        document.getElementById("hod").innerHTML = this.responseText;
+      }
+    };
+    xhttp.open("GET", "/hod", true);
+    xhttp.send();
+  }, 10000 ) ;
+  </script>
+ -
+
 </html>
 
 
