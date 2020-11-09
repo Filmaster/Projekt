@@ -43,10 +43,12 @@ String processor(const String& var){
 
   return String();
 }
+///////////////////////////
 
 
 
 
+///////////////////////////
 void printLocalTime()
 {
   struct tm timeinfo;
@@ -123,7 +125,7 @@ void setup()
 /////////////////////////////////////////////////////////////////
 
  server.on("/hod", HTTP_GET, [](AsyncWebServerRequest *request){
-    request->send_P(200, "text/plain","Funguje to i bez toho." );
+    request->send(200, "text/plain","Dokud tu napisu test jde to ale promenou poslat neumim");
   });
 
 
@@ -154,6 +156,8 @@ void setup()
     }
     else {
       inputMessage1 = "No message sent";
+      inputMessage2 = "No message sent";
+      inputMessage3 = "No message sent";
       inputParam = "none";
     }
     Serial.println(inputMessage1);

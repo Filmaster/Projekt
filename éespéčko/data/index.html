@@ -8,26 +8,46 @@
 
 </head>
 <body>
-  <h1> Web Server</h1>
-  <p>ledka 1: <strong> %STATE%</strong></p>
-  <p><a href="/on"><button class="button">ON</button></a></p>
-  <p><a href="/off"><button class="button button2">OFF</button></a></p>
-
+  <h1> Automatické krmítko</h1>
 
   <span id="hod">%h%</span>
 
+  <h2>Natavení dávkovače </h2>
+  <h4>První krmení</h4>
   <title>ESP Input Form</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   </head><body>
   <form action="/get">
-    input1: <input type="text" name="input1">
+    Hodiny: <input type="text" name="input1">
 
-    input2: <input type="text" name="input2">
+    Minuty <input type="text" name="input2">
 
-    input3: <input type="text" name="input3"> 
+     <input type="submit" value="Submit">
+  </form>
+  <br>
+  <h4>Druhé krmení</h4>
+
+  <form action="/get">
+    Hodiny: <input type="text" name="input3">
+
+    Minuty <input type="text" name="input4">
+
+     <input type="submit" value="Submit">
+  </form>
+  <h4> Ostatní nastavení </h4>
+  <form action="/get">
+    Délka dávkování: <input type="text" name="input5">
+
+
      <input type="submit" value="Submit">
   </form>
   
+
+  
+  <p>Vypnutí zapnutí <strong> %STATE%</strong></p>
+  <p><a href="/on"><button class="button">ON</button></a></p>
+  <p><a href="/off"><button class="button button2">OFF</button></a></p>
+
 </body>
 
 
