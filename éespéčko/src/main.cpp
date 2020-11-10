@@ -10,6 +10,10 @@ const char* ssid = "AP_Dusek";
 const char* password = "dusikovi";
 
 
+AsyncWebServer server(80);
+
+/////////////////////////////////////////
+
 // Set LED GPIO - tohle by mela byt ledka na esp32
 const int ledPin = 26;
 const int ledPin2=27;
@@ -21,10 +25,12 @@ const int   daylightOffset_sec = 3600;
 const char* PARAM_INPUT_1 = "input1";
 const char* PARAM_INPUT_2 = "input2";
 const char* PARAM_INPUT_3 = "input3";
+const char* PARAM_INPUT_4 = "input4";
+const char* PARAM_INPUT_5 = "input5";
+String formattedDate;
+String dayStamp;
+String timeStamp;
 
-
-// Create AsyncWebServer object on port 80
-AsyncWebServer server(80);
 
 // Replaces placeholder with LED state value
 String processor(const String& var){
@@ -46,9 +52,23 @@ String processor(const String& var){
 ///////////////////////////
 
 
+String getTime() {
+    struct tm timeinfo;
+  String time = (&timeinfo, "%H:%M:%S");
+  Serial.println(time);
+  return String(time);
+}
 
 
-///////////////////////////
+
+
+
+
+
+
+
+
+//uložit do proměné  nebo struct
 void printLocalTime()
 {
   struct tm timeinfo;
@@ -125,7 +145,7 @@ void setup()
 /////////////////////////////////////////////////////////////////
 
  server.on("/hod", HTTP_GET, [](AsyncWebServerRequest *request){
-    request->send(200, "text/plain","Dokud tu napisu test jde to ale promenou poslat neumim");
+    request->send(200, "text/plain",getTime().c_str());
   });
 
 
@@ -138,6 +158,8 @@ void setup()
     String inputMessage1;
     String inputMessage2;
     String inputMessage3;
+    String inputMessage4;
+    String inputMessage5;
     String inputParam;
     // GET input1 value on <ESP_IP>/get?input1=<inputMessage>
     if (request->hasParam(PARAM_INPUT_1)) {
@@ -154,15 +176,27 @@ void setup()
       inputMessage3 = request->getParam(PARAM_INPUT_3)->value();
       inputParam = PARAM_INPUT_3;
     }
+     else if (request->hasParam(PARAM_INPUT_4)) {
+      inputMessage4 = request->getParam(PARAM_INPUT_4)->value();
+      inputParam = PARAM_INPUT_4;
+    }
+     else if (request->hasParam(PARAM_INPUT_5)) {
+      inputMessage5 = request->getParam(PARAM_INPUT_5)->value();
+      inputParam = PARAM_INPUT_3;
+    }
     else {
       inputMessage1 = "No message sent";
       inputMessage2 = "No message sent";
       inputMessage3 = "No message sent";
+      inputMessage4 = "No message sent";
+      inputMessage5 = "No message sent";
       inputParam = "none";
     }
     Serial.println(inputMessage1);
     Serial.println(inputMessage2);
     Serial.println(inputMessage3);
+        Serial.println(inputMessage4);
+            Serial.println(inputMessage5);
     request->send(200,  inputParam , inputMessage1);
     request->send(200,  inputParam , inputMessage2);
     request->send(200,  inputParam , inputMessage3);
@@ -175,7 +209,105 @@ void setup()
  void loop(){
   delay(1000);
   printLocalTime();
+  getTime();
   
  }
 
   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
