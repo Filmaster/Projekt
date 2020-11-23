@@ -16,13 +16,15 @@ NTPClient timeClient(ntpUDP);
 /////////////////////////////////////////
 
 // Set LED GPIO - tohle by mela byt ledka na esp32
-const int ledPin = 26;
-const int ledPin2 = 25;
-const int ledPin3 = 33;
-const int ledPin4 = 32;
+const int in1 =  26;
+const int in2 =  25;
+const int in3 = 33;
+const int in4 = 32;
 const char *ntpServer = "pool.ntp.org";
-String ledState;
+String ledState1;
 String ledState2;
+String ledState3;
+String ledState4;
 const long gmtOffset_sec = 3600;
 const int daylightOffset_sec = 3600;
 const char *PARAM_INPUT_1 = "input1";
@@ -34,28 +36,105 @@ String formattedDate;
 String dayStamp;
 String timeStamp;
 
-// Replaces placeholder with LED state value
-String processor(const String &var)
+
+String processor1(const String &var)
 {
   Serial.println(var);
   if (var == "STATE")
   {
-    if (digitalRead(ledPin))
+    if (digitalRead(in1))
     {
-      ledState = "ON";
+      ledState1 = "ON";
+      digitalWrite(in1, HIGH);
+
     }
     else
     {
-      ledState = "OFF";
+      ledState1 = "OFF";
+      digitalWrite(in1, LOW);
+
     }
 
-    Serial.print(ledState);
-    return ledState;
+    Serial.print(ledState1);
+    return ledState1;
   }
 
   return String();
 }
-///////////////////////////
+String processor2(const String &var)
+{
+  Serial.println(var);
+  if (var == "STATE")
+  {
+    if (digitalRead(in2))
+    {
+      ledState2 = "ON";
+      digitalWrite(in2, HIGH);
+
+    }
+    else
+    {
+      ledState2 = "OFF";
+      digitalWrite(in2, LOW);
+
+    }
+
+    Serial.print(ledState2);
+    return ledState2;
+  }
+
+  return String();
+}
+String processor3(const String &var)
+{
+  Serial.println(var);
+  if (var == "STATE")
+  {
+    if (digitalRead(in3))
+    {
+      ledState1 = "ON";
+      digitalWrite(in3, HIGH);
+
+    }
+    else
+    {
+      ledState1 = "OFF";
+      digitalWrite(in3, LOW);
+
+    }
+
+    Serial.print(ledState3);
+    return ledState3;
+  }
+
+  return String();
+}
+String processor4(const String &var)
+{
+  Serial.println(var);
+  if (var == "STATE")
+  {
+    if (digitalRead(in4))
+    {
+      ledState1 = "ON";
+      digitalWrite(in4, HIGH);
+
+    }
+    else
+    {
+      ledState1 = "OFF";
+      digitalWrite(in4, LOW);
+
+    }
+
+    Serial.print(ledState4);
+    return ledState4;
+  }
+
+  return String();
+}
+
+
 
 
 
@@ -66,8 +145,7 @@ String getTime()
   return String(time);
 }
 
-void setup()
-{
+void setup(){
   Serial.begin(115200);
 
   //connect to WiFi
@@ -86,7 +164,7 @@ void setup()
 
   // Serial port for debugging purposes
   Serial.begin(115200);
-  pinMode(ledPin, OUTPUT);
+  pinMode(in1, OUTPUT);
 
   // Initialize SPIFFS
   if (!SPIFFS.begin(true))
@@ -105,35 +183,51 @@ void setup()
 
   // Print ESP32 Local IP Address
   Serial.println(WiFi.localIP());
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  pinMode(in1, OUTPUT);
+  pinMode(in2, OUTPUT);
+  pinMode(in3, OUTPUT);
+  pinMode(in4, OUTPUT);
 
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // Route for root / web page
   server.on("/", HTTP_GET, [](AsyncWebServerRequest *request) {
-    request->send(SPIFFS, "/index.html", String(), false, processor);
+    request->send(SPIFFS, "/index.html", String(), false, processor1);
   });
 
   // Route to load style.css file
   server.on("/style.css", HTTP_GET, [](AsyncWebServerRequest *request) {
     request->send(SPIFFS, "/style.css", "text/css");
   });
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // Route to set GPIO to HIGH
-  server.on("/on", HTTP_GET, [](AsyncWebServerRequest *request) {
-    digitalWrite(ledPin, HIGH);
-    request->send(SPIFFS, "/index.html", String(), false, processor);
-    //////////////////////////////////////////////////////////////////////////////////////////////Send_Email();
+  server.on("/on1", HTTP_GET, [](AsyncWebServerRequest *request) {
+    digitalWrite(in1, HIGH);
+    request->send(SPIFFS, "/index.html", String(), false, processor1);
   });
 
   // Route to set GPIO to LOW
-  server.on("/off", HTTP_GET, [](AsyncWebServerRequest *request) {
-    digitalWrite(ledPin, LOW);
-    request->send(SPIFFS, "/index.html", String(), false, processor);
+  server.on("/off1", HTTP_GET, [](AsyncWebServerRequest *request) {
+    digitalWrite(in1, LOW);
+    request->send(SPIFFS, "/index.html", String(), false, processor1);
+  });
+  server.on("/on2", HTTP_GET, [](AsyncWebServerRequest *request) {
+    digitalWrite(in2, HIGH);
+     ledState2 = "ON";
+    request->send(SPIFFS, "/index.html", String(), false, processor2);
   });
 
-  /////////////////////////////////////////////////////////////////
+  // Route to set GPIO to LOW
+  server.on("/off2", HTTP_GET, [](AsyncWebServerRequest *request) {
+    digitalWrite(in2, LOW);
+     ledState2 = "OFF";
+    request->send(SPIFFS, "/index.html", String(), false, processor2);
+  });
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  /*server.on("/hod", HTTP_GET, [](AsyncWebServerRequest *request){
-    request->send(200, "text/plain",getTime());
-  });*/
 
   server.on("/hod", HTTP_GET, [](AsyncWebServerRequest *request) {
     request->send_P(200, "text/plain", getTime().c_str());
