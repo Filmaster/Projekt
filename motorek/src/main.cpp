@@ -3,10 +3,10 @@
 // Krokový motor a driver
 
 // čísla pinů pro digitální výstupy
-const int in1 =  3;
-const int in2 =  1;
-const int in3 = 22;
-const int in4 = 23;
+const int in1 =  26;
+const int in2 =  25;
+const int in3 = 33;
+const int in4 = 32;
 
 // proměnná pro nastavení rychlosti,
 // se zvětšujícím se číslem se rychlost zmenšuje
