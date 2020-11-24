@@ -37,7 +37,7 @@ String dayStamp;
 String timeStamp;
 
 
-String processor1(const String &var)
+String processor(const String &var)
 {
   Serial.println(var);
   if (var == "STATE")
@@ -45,13 +45,11 @@ String processor1(const String &var)
     if (digitalRead(in1))
     {
       ledState1 = "ON";
-      digitalWrite(in1, HIGH);
 
     }
     else
     {
       ledState1 = "OFF";
-      digitalWrite(in1, LOW);
 
     }
 
@@ -61,83 +59,6 @@ String processor1(const String &var)
 
   return String();
 }
-String processor2(const String &var)
-{
-  Serial.println(var);
-  if (var == "STATE")
-  {
-    if (digitalRead(in2))
-    {
-      ledState2 = "ON";
-      digitalWrite(in2, HIGH);
-
-    }
-    else
-    {
-      ledState2 = "OFF";
-      digitalWrite(in2, LOW);
-
-    }
-
-    Serial.print(ledState2);
-    return ledState2;
-  }
-
-  return String();
-}
-String processor3(const String &var)
-{
-  Serial.println(var);
-  if (var == "STATE")
-  {
-    if (digitalRead(in3))
-    {
-      ledState1 = "ON";
-      digitalWrite(in3, HIGH);
-
-    }
-    else
-    {
-      ledState1 = "OFF";
-      digitalWrite(in3, LOW);
-
-    }
-
-    Serial.print(ledState3);
-    return ledState3;
-  }
-
-  return String();
-}
-String processor4(const String &var)
-{
-  Serial.println(var);
-  if (var == "STATE")
-  {
-    if (digitalRead(in4))
-    {
-      ledState1 = "ON";
-      digitalWrite(in4, HIGH);
-
-    }
-    else
-    {
-      ledState1 = "OFF";
-      digitalWrite(in4, LOW);
-
-    }
-
-    Serial.print(ledState4);
-    return ledState4;
-  }
-
-  return String();
-}
-
-
-
-
-
 String getTime()
 {
   String time = timeClient.getFormattedTime();
@@ -195,7 +116,7 @@ void setup(){
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // Route for root / web page
   server.on("/", HTTP_GET, [](AsyncWebServerRequest *request) {
-    request->send(SPIFFS, "/index.html", String(), false, processor1);
+    request->send(SPIFFS, "/index.html", String(), false, processor);
   });
 
   // Route to load style.css file
@@ -206,25 +127,25 @@ void setup(){
   // Route to set GPIO to HIGH
   server.on("/on1", HTTP_GET, [](AsyncWebServerRequest *request) {
     digitalWrite(in1, HIGH);
-    request->send(SPIFFS, "/index.html", String(), false, processor1);
+    request->send(SPIFFS, "/index.html", String(), false, processor);
   });
 
   // Route to set GPIO to LOW
   server.on("/off1", HTTP_GET, [](AsyncWebServerRequest *request) {
     digitalWrite(in1, LOW);
-    request->send(SPIFFS, "/index.html", String(), false, processor1);
+    request->send(SPIFFS, "/index.html", String(), false, processor);
   });
   server.on("/on2", HTTP_GET, [](AsyncWebServerRequest *request) {
     digitalWrite(in2, HIGH);
      ledState2 = "ON";
-    request->send(SPIFFS, "/index.html", String(), false, processor2);
+    request->send(SPIFFS, "/index.html", String(), false, processor);
   });
 
   // Route to set GPIO to LOW
   server.on("/off2", HTTP_GET, [](AsyncWebServerRequest *request) {
     digitalWrite(in2, LOW);
      ledState2 = "OFF";
-    request->send(SPIFFS, "/index.html", String(), false, processor2);
+    request->send(SPIFFS, "/index.html", String(), false, processor);
   });
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -280,15 +201,28 @@ void setup(){
       inputMessage5 = "No message sent";
       inputParam = "none";
     }
+    
+    request->send(200, inputParam, inputMessage1);
+    request->send(200, inputParam, inputMessage2);
+    request->send(200, inputParam, inputMessage3);
     Serial.println(inputMessage1);
     Serial.println(inputMessage2);
     Serial.println(inputMessage3);
     Serial.println(inputMessage4);
     Serial.println(inputMessage5);
-    request->send(200, inputParam, inputMessage1);
-    request->send(200, inputParam, inputMessage2);
-    request->send(200, inputParam, inputMessage3);
+   if(inputMessage1=="ahoj"){
+    Serial.println("You did it");
+    // Nesviti vsechny ledky zaroven proč ?
+  digitalWrite(in1, HIGH);
+  digitalWrite(in2, HIGH);
+  digitalWrite(in3, HIGH);
+  digitalWrite(in4, HIGH);
+  }
+
+
   });
+
+
 
   // Start server
   server.begin();
