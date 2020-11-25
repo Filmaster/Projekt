@@ -8,6 +8,10 @@
 
 </head>
 <body>
+ 
+
+
+
   <h1> Automaticke krmitko</h1>
 
   <span id="hod"></span>
@@ -18,30 +22,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   </head><body>
   <form action="/get">
-    Hodiny: <input type="text" name="input1">
+    Hodiny: <input input type="number" step="1" name="input1" value required>
 
     Minuty <input type="text" name="input2">
 
-     <input type="submit" value="Submit">
+     <input onclick="goBack()"  type="submit" value="Submit">
   </form>
   <br>
-  <h4>Druhe krmeni</h4>
-
-  <form action="/get">
-    Hodiny: <input type="text" name="input3">
-
-    Minuty <input type="text" name="input4">
-
-     <input type="submit" value="Submit">
-  </form>
-  <h4> Ostatni nastaveni </h4>
-  <form action="/get">
-    Délka davkováni: <input type="text" name="input5">
 
 
-     <input type="submit" value="Submit">
-  </form>
-  
+
+
 
   
   <p>Vypnuti zapnuti <strong> %STATE%</strong></p>
@@ -55,9 +46,15 @@
 </body>
 
 
-<script>
 
-  
+
+
+<script>
+function goBack() {
+  window.history.back();
+}
+</script>
+<script>
   setInterval(function ( ) {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
@@ -67,9 +64,13 @@
     };
     xhttp.open("GET", "/hod", true);
     xhttp.send();
-  }, 10000 ) ;
+  }, 10000 ) ; 
+   function setHodiny() {
+    var hh = $('#hodinyTest').val();
+      $.post("/hodiny", { hodiny: hh });
+  }
   </script>
- -
+ 
 
 </html>
 
