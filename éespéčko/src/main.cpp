@@ -38,6 +38,8 @@ String timeStamp;
 int casovac = 50000;
 Scheduler runner;
 int inputHodiny = 12;
+int porovnaniHod = 1;
+int porovnaniMin =25;
 struct tm timeinfo;
 
 String processor(const String &var)
@@ -82,20 +84,21 @@ void ledkyON()
 
 void printLocalTime()
 {
-  int mm = timeClient.getMinutes();
+  porovnaniMin = timeClient.getMinutes();
+ // porovnaniMin = (&timeinfo, "%S").toInt();
   struct tm timeinfo;
   if (!getLocalTime(&timeinfo))
   {
     Serial.println("Failed to obtain time");
     return;
   }
-  Serial.println(&timeinfo, "%A, %B %d %Y %H:%M:%S");
-  Serial.println(timeClient.getMinutes());
-  if (mm == 1)
-  {
+  Serial.println(&timeinfo, "%H:%M:%S");
+  //Serial.println(timeClient.getMinutes());
+  if(porovnaniMin==inputHodiny){
     ledkyON();
-    delay(70000);
   }
+  
+  
 }
 void pripojeni()
 {
@@ -263,7 +266,7 @@ if (inputHodiny == 2)
 void loop()
 {
   delay(1000);
-  //printLocalTime();
+  printLocalTime();
 
   //getTime();
 }
