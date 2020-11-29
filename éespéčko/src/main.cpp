@@ -96,6 +96,7 @@ void printLocalTime()
   //Serial.println(timeClient.getMinutes());
   if(porovnaniMin==inputHodiny){
     ledkyON();
+    inputHodiny=-1;
   }
   
   
@@ -253,10 +254,6 @@ void setup()
     // Serial.println(inputHodiny);
     inputHodiny=inputMessage1.toInt();
 Serial.println(inputHodiny);
-if (inputHodiny == 2)
-  {
-    ledkyON();
-  }
   });
 
   server.begin();
