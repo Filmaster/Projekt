@@ -7,13 +7,19 @@
   <link rel="stylesheet" type="text/css" href="style.css">
 
 </head>
+<script>
+  var time = new Date();
+  console.log(time.getHours() + ":" + time.getMinutes() + ":" + time.getSeconds());
+  document.getElementById("cas").innerHTML = time.getHours() + ":" + time.getMinutes() + ":" + time.getSeconds();
+</script>
 <body>
  
 
-
+  <div class="row center justify-content-center">
+  </div>
 
   <h1> Automaticke krmitko</h1>
-
+    <p id="aktualniCas"></p>
   <span id="hod"></span>
 
   <h2>Nataveni davkovace </h2>
@@ -22,11 +28,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   </head><body>
   <form action="/get">
-    Hodiny: <input input type="number" step="1" name="input1" value required>
-
-    Minuty <input type="text" name="input2">
-
-     <input onclick="goBack()"  type="submit" value="Submit">
+    Hodiny: <input type="time" class="form-control" id="cas1" name="input1" value required>
+     <input  type="submit" value="Submit">
   </form>
   <br>
 
@@ -47,7 +50,7 @@
 
 
 
-
+<script src="script.js"></script>
 
 <script>
 function goBack() {

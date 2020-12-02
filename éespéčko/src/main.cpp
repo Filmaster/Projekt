@@ -37,7 +37,9 @@ String dayStamp;
 String timeStamp;
 int casovac = 50000;
 Scheduler runner;
+char inputCas;
 int inputHodiny = 12;
+int inputminuty = 12;
 int porovnaniHod = 1;
 int porovnaniMin =25;
 struct tm timeinfo;
@@ -84,19 +86,35 @@ void ledkyON()
 
 void printLocalTime()
 {
-  porovnaniMin = timeClient.getMinutes();
- // porovnaniMin = (&timeinfo, "%S").toInt();
+  //porovnaniMin = timeClient.getMinutes();
+  //porovnaniMin = (&timeinfo, "%S");
   struct tm timeinfo;
   if (!getLocalTime(&timeinfo))
   {
     Serial.println("Failed to obtain time");
     return;
   }
-  Serial.println(&timeinfo, "%H:%M:%S");
-  //Serial.println(timeClient.getMinutes());
-  if(porovnaniMin==inputHodiny){
-    ledkyON();
-    inputHodiny=-1;
+  Serial.println(&timeinfo, "%A, %B %d %Y %H:%M:%S");
+  char porovnaniHod[3];
+    char porovnaniMin[3];
+
+  //strftime(porovnaniHod,3, "%H", &timeinfo);
+   // strftime(porovnaniMin,3, "%M", &timeinfo);
+  //strftime(timeWeekDay,10, "%A", &timeinfo);
+ // Serial.println(timeWeekDay);
+ int vysledek=0;
+ int hodDes=0;
+ int hodJed=0;
+  hodDes=porovnaniHod[0];
+hodJed+=porovnaniHod[1];
+vysledek = hodDes;//+hodJed;
+   // Serial.println("Bumbum bysledek");
+   // Serial.println(vysledek);
+  if(inputCas==inputHodiny){
+    Serial.println("you crazy motherfucker you did it");
+    //inputHodiny=-1;
+    //intputMinuty=-1;
+
   }
   
   
@@ -186,7 +204,7 @@ void setup()
   });
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   server.on("/hodiny", HTTP_POST, [](AsyncWebServerRequest *request) {
-    inputHodiny = request->arg("hodiny").toInt();
+    inputCas = request->arg("hodiny").toInt();
     request->send_P(200, "text/json", "{\"result\":\"ok\"}");
   });
 
@@ -246,14 +264,8 @@ void setup()
     request->send(200, inputParam, inputMessage1);
     // request->send(200, inputParam, inputMessage2);
     //request->send(200, inputParam, inputMessage3);
-    Serial.println(inputMessage1);
-    //Serial.println(inputMessage2);
-    //  Serial.println(inputMessage3);
-    //Serial.println(inputMessage4);
-    // Serial.println(inputMessage5);
-    // Serial.println(inputHodiny);
-    inputHodiny=inputMessage1.toInt();
-Serial.println(inputHodiny);
+    
+Serial.println(inputCas);
   });
 
   server.begin();
