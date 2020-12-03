@@ -23,10 +23,6 @@ const int in1 = 26;
 const int in2 = 25;
 const int in3 = 33;
 const int in4 = 32;
-String ledState1;
-String ledState2;
-String ledState3;
-String ledState4;
 const char *PARAM_INPUT_1 = "input1";
 const char *PARAM_INPUT_2 = "input2";
 const char *PARAM_INPUT_3 = "input3";
@@ -37,33 +33,14 @@ String dayStamp;
 String timeStamp;
 int casovac = 50000;
 Scheduler runner;
-char inputCas;
+String inputCas;
 int inputHodiny = 12;
 int inputminuty = 12;
 int porovnaniHod = 1;
 int porovnaniMin =25;
 struct tm timeinfo;
+char porovnaniCas[8];
 
-String processor(const String &var)
-{
-  Serial.println(var);
-  if (var == "STATE")
-  {
-    if (digitalRead(in1))
-    {
-      ledState1 = "ON";
-    }
-    else
-    {
-      ledState1 = "OFF";
-    }
-
-    Serial.print(ledState1);
-    return ledState1;
-  }
-
-  return String();
-}
 
 String getTime()
 {
@@ -72,22 +49,12 @@ String getTime()
   return String(time);
 }
 
-void ledkyON()
-{
-  digitalWrite(in1, HIGH);
-  digitalWrite(in2, HIGH);
-  digitalWrite(in3, HIGH);
-  //digitalWrite(in4, HIGH);
-  delay(1000);
-  digitalWrite(in1, LOW);
-  digitalWrite(in2, LOW);
-  digitalWrite(in3, LOW);
-}
+
+
 
 void printLocalTime()
 {
-  //porovnaniMin = timeClient.getMinutes();
-  //porovnaniMin = (&timeinfo, "%S");
+  String porovnani;
   struct tm timeinfo;
   if (!getLocalTime(&timeinfo))
   {
@@ -95,29 +62,20 @@ void printLocalTime()
     return;
   }
   Serial.println(&timeinfo, "%A, %B %d %Y %H:%M:%S");
-  char porovnaniHod[3];
-    char porovnaniMin[3];
 
-  //strftime(porovnaniHod,3, "%H", &timeinfo);
-   // strftime(porovnaniMin,3, "%M", &timeinfo);
-  //strftime(timeWeekDay,10, "%A", &timeinfo);
- // Serial.println(timeWeekDay);
- int vysledek=0;
- int hodDes=0;
- int hodJed=0;
-  hodDes=porovnaniHod[0];
-hodJed+=porovnaniHod[1];
-vysledek = hodDes;//+hodJed;
-   // Serial.println("Bumbum bysledek");
-   // Serial.println(vysledek);
-  if(inputCas==inputHodiny){
+  strftime(porovnaniCas,6, "%H:%M", &timeinfo);
+porovnani=porovnaniCas;
+    //strftime(porovnaniMin,3, "%M", &timeinfo);
+ // strftime(timeWeekDay,10, "%A", &timeinfo);
+  //Serial.println(timeWeekDay);
+Serial.println(porovnani);
+  if(inputCas==porovnani){
     Serial.println("you crazy motherfucker you did it");
     //inputHodiny=-1;
     //intputMinuty=-1;
 
   }
-  
-  
+
 }
 void pripojeni()
 {
@@ -171,45 +129,21 @@ void setup()
 
   // Route for root / web page
   server.on("/", HTTP_GET, [](AsyncWebServerRequest *request) {
-    request->send(SPIFFS, "/index.html", String(), false, processor);
+    request->send(SPIFFS, "/index.html", String(), false);
   });
 
   // Route to load style.css file
   server.on("/style.css", HTTP_GET, [](AsyncWebServerRequest *request) {
-    request->send(SPIFFS, "/style.css", "text/css");
+    request->send(SPIFFS, "/style.css", "text/css","/script.js");
   });
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  // Route to set GPIO to HIGH
-  server.on("/on1", HTTP_GET, [](AsyncWebServerRequest *request) {
-    digitalWrite(in1, HIGH);
-    request->send(SPIFFS, "/index.html", String(), false, processor);
-  });
-
-  // Route to set GPIO to LOW
-  server.on("/off1", HTTP_GET, [](AsyncWebServerRequest *request) {
-    digitalWrite(in1, LOW);
-    request->send(SPIFFS, "/index.html", String(), false, processor);
-  });
-  server.on("/on2", HTTP_GET, [](AsyncWebServerRequest *request) {
-    digitalWrite(in2, HIGH);
-    ledState2 = "ON";
-    request->send(SPIFFS, "/index.html", String(), false, processor);
-  });
-
-  // Route to set GPIO to LOW
-  server.on("/off2", HTTP_GET, [](AsyncWebServerRequest *request) {
-    digitalWrite(in2, LOW);
-    ledState2 = "OFF";
-    request->send(SPIFFS, "/index.html", String(), false, processor);
-  });
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
   server.on("/hodiny", HTTP_POST, [](AsyncWebServerRequest *request) {
     inputCas = request->arg("hodiny").toInt();
     request->send_P(200, "text/json", "{\"result\":\"ok\"}");
   });
 
   server.on("/hod", HTTP_GET, [](AsyncWebServerRequest *request) {
-    request->send_P(200, "text/plain", getTime().c_str());
+    request->send_P(200, "text/plain", porovnaniCas);
   });
 
   ///////////////////////////////////////////////////////////////
@@ -262,9 +196,9 @@ void setup()
     }
 
     request->send(200, inputParam, inputMessage1);
-    // request->send(200, inputParam, inputMessage2);
-    //request->send(200, inputParam, inputMessage3);
-    
+   // Serial.println(inputMessage1);
+
+    inputCas=inputMessage1;
 Serial.println(inputCas);
   });
 
@@ -279,3 +213,8 @@ void loop()
 
   //getTime();
 }
+
+
+
+
+

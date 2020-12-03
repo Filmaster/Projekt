@@ -33,19 +33,6 @@
   </form>
   <br>
 
-
-
-
-
-  
-  <p>Vypnuti zapnuti <strong> %STATE%</strong></p>
-  <p><a href="/on1"><button class="button">ON</button></a></p>
-  <p><a href="/off1"><button class="button button2">OFF</button></a></p>
-
-  <p>Vypnuti zapnuti <strong> %STATE%</strong></p>
-  <p><a href="/on2"><button class="button">ON</button></a></p>
-  <p><a href="/off2"><button class="button button2">OFF</button></a></p>
-
 </body>
 
 
@@ -67,7 +54,7 @@ function goBack() {
     };
     xhttp.open("GET", "/hod", true);
     xhttp.send();
-  }, 10000 ) ; 
+  }, 1000 ) ; 
    function setHodiny() {
     var hh = $('#hodinyTest').val();
       $.post("/hodiny", { hodiny: hh });
