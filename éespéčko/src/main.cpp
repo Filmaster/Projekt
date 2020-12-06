@@ -19,10 +19,10 @@ const long gmtOffset_sec = 3600;
 const int daylightOffset_sec = 3600;
 /////////////////////////////////////////
 
-const int in1 = 26;
-const int in2 = 25;
-const int in3 = 33;
-const int in4 = 32;
+const int in1 = 5;
+const int in2 = 18;
+const int in3 = 19;
+const int in4 = 21;
 const char *PARAM_INPUT_1 = "input1";
 const char *PARAM_INPUT_2 = "input2";
 const char *PARAM_INPUT_3 = "input3";
@@ -37,9 +37,133 @@ String inputCas;
 int inputHodiny = 12;
 int inputminuty = 12;
 int porovnaniHod = 1;
-int porovnaniMin =25;
+int porovnaniMin = 25;
 struct tm timeinfo;
 char porovnaniCas[8];
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+int rychlost = 1;
+int uhel = 180;
+
+void krok1()
+{
+  digitalWrite(in1, HIGH);
+  digitalWrite(in2, LOW);
+  digitalWrite(in3, LOW);
+  digitalWrite(in4, LOW);
+  delay(rychlost);
+}
+void krok2()
+{
+  digitalWrite(in1, HIGH);
+  digitalWrite(in2, HIGH);
+  digitalWrite(in3, LOW);
+  digitalWrite(in4, LOW);
+  delay(rychlost);
+}
+void krok3()
+{
+  digitalWrite(in1, LOW);
+  digitalWrite(in2, HIGH);
+  digitalWrite(in3, LOW);
+  digitalWrite(in4, LOW);
+  delay(rychlost);
+}
+void krok4()
+{
+  digitalWrite(in1, LOW);
+  digitalWrite(in2, HIGH);
+  digitalWrite(in3, HIGH);
+  digitalWrite(in4, LOW);
+  delay(rychlost);
+}
+void krok5()
+{
+  digitalWrite(in1, LOW);
+  digitalWrite(in2, LOW);
+  digitalWrite(in3, HIGH);
+  digitalWrite(in4, LOW);
+  delay(rychlost);
+}
+void krok6()
+{
+  digitalWrite(in1, LOW);
+  digitalWrite(in2, LOW);
+  digitalWrite(in3, HIGH);
+  digitalWrite(in4, HIGH);
+  delay(rychlost);
+}
+void krok7()
+{
+  digitalWrite(in1, LOW);
+  digitalWrite(in2, LOW);
+  digitalWrite(in3, LOW);
+  digitalWrite(in4, HIGH);
+  delay(rychlost);
+}
+void krok8()
+{
+  digitalWrite(in1, HIGH);
+  digitalWrite(in2, LOW);
+  digitalWrite(in3, LOW);
+  digitalWrite(in4, HIGH);
+  delay(rychlost);
+}
+
+void rotacePoSmeru()
+{
+  krok1();
+  krok2();
+  krok3();
+  krok4();
+  krok5();
+  krok6();
+  krok7();
+  krok8();
+}
+
+void rotaceProtiSmeru()
+{
+  krok8();
+  krok7();
+  krok6();
+  krok5();
+  krok4();
+  krok3();
+  krok2();
+  krok1();
+}
+
+void rotace()
+{
+  for (int i = 0; i < (uhel * 64 / 45); i++)
+  {
+    rotacePoSmeru();
+  }
+
+  for (int i = 0; i < (uhel * 64 / 45); i++)
+  {
+    rotaceProtiSmeru();
+  }
+  delay(10000);
+  // pauza po dobu 1 vteřiny
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
 
 
 String getTime()
@@ -48,9 +172,6 @@ String getTime()
   Serial.println(time);
   return String(time);
 }
-
-
-
 
 void printLocalTime()
 {
@@ -63,19 +184,16 @@ void printLocalTime()
   }
   Serial.println(&timeinfo, "%A, %B %d %Y %H:%M:%S");
 
-  strftime(porovnaniCas,6, "%H:%M", &timeinfo);
-porovnani=porovnaniCas;
-    //strftime(porovnaniMin,3, "%M", &timeinfo);
- // strftime(timeWeekDay,10, "%A", &timeinfo);
+  strftime(porovnaniCas, 6, "%H:%M", &timeinfo);
+  porovnani = porovnaniCas;
+  //strftime(porovnaniMin,3, "%M", &timeinfo);
+  // strftime(timeWeekDay,10, "%A", &timeinfo);
   //Serial.println(timeWeekDay);
-Serial.println(porovnani);
-  if(inputCas==porovnani){
-    Serial.println("you crazy motherfucker you did it");
-    //inputHodiny=-1;
-    //intputMinuty=-1;
-
+  Serial.println(porovnani);
+  if (inputCas == porovnani)
+  {
+    rotace();
   }
-
 }
 void pripojeni()
 {
@@ -116,7 +234,6 @@ void pripojeni()
   Serial.println(WiFi.localIP());
 }
 
-
 void setup()
 {
   Serial.begin(115200);
@@ -134,9 +251,9 @@ void setup()
 
   // Route to load style.css file
   server.on("/style.css", HTTP_GET, [](AsyncWebServerRequest *request) {
-    request->send(SPIFFS, "/style.css", "text/css","/script.js");
+    request->send(SPIFFS, "/style.css", "text/css", "/script.js");
   });
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////
   server.on("/hodiny", HTTP_POST, [](AsyncWebServerRequest *request) {
     inputCas = request->arg("hodiny").toInt();
     request->send_P(200, "text/json", "{\"result\":\"ok\"}");
@@ -191,20 +308,15 @@ void setup()
       inputMessage3 = "No message sent";
       inputMessage4 = "No message sent";
       inputMessage5 = "No message sent";
-
       inputParam = "none";
     }
-
     request->send(200, inputParam, inputMessage1);
-   // Serial.println(inputMessage1);
-
-    inputCas=inputMessage1;
-Serial.println(inputCas);
+    inputCas = inputMessage1;
+    Serial.println(inputCas);
   });
 
   server.begin();
 }
-
 
 void loop()
 {
@@ -213,8 +325,3 @@ void loop()
 
   //getTime();
 }
-
-
-
-
-
