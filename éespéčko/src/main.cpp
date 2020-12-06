@@ -147,7 +147,7 @@ void rotace()
   {
     rotaceProtiSmeru();
   }
-  delay(10000);
+
   // pauza po dobu 1 vteřiny
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -192,7 +192,8 @@ void printLocalTime()
   Serial.println(porovnani);
   if (inputCas == porovnani)
   {
-    rotace();
+    rotace();  
+    delay(70000);
   }
 }
 void pripojeni()
