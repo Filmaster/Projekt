@@ -26,26 +26,4 @@ function showTime() {
 
 }
 
-let casy = [];
-const pridejCas = (ev) => {
-    ev.preventDefault();  //to stop the form submitting
-    let cas = {
-        cas1: document.getElementById('cas1').value,
-        cas2: document.getElementById('cas2').value
-    }
-    casy.push(cas);
-    //document.querySelector('form').reset();
-
-    //for display purposes only
-    console.warn('added', { casy });
-
-    //saving to localStorage
-    localStorage.setItem('data', JSON.stringify(casy));
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('btn').addEventListener('click', pridejCas);
-});
-
-
 showTime();

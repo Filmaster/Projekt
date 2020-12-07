@@ -6,6 +6,7 @@
 #include <NTPClient.h>
 #include <WiFiUdp.h>
 #include <TaskScheduler.h>
+#include <Stepper.h>
 #include "time.h"
 #define CASOVAC 5000
 const char *ssid = "AP_Dusek";
@@ -19,10 +20,6 @@ const long gmtOffset_sec = 3600;
 const int daylightOffset_sec = 3600;
 /////////////////////////////////////////
 
-const int in1 = 5;
-const int in2 = 18;
-const int in3 = 19;
-const int in4 = 21;
 const char *PARAM_INPUT_1 = "input1";
 const char *PARAM_INPUT_2 = "input2";
 const char *PARAM_INPUT_3 = "input3";
@@ -44,128 +41,26 @@ char porovnaniCas[8];
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-int rychlost = 1;
-int uhel = 180;
+const int stepsPerRevolution = 2048;
 
-void krok1()
-{
-  digitalWrite(in1, HIGH);
-  digitalWrite(in2, LOW);
-  digitalWrite(in3, LOW);
-  digitalWrite(in4, LOW);
-  delay(rychlost);
-}
-void krok2()
-{
-  digitalWrite(in1, HIGH);
-  digitalWrite(in2, HIGH);
-  digitalWrite(in3, LOW);
-  digitalWrite(in4, LOW);
-  delay(rychlost);
-}
-void krok3()
-{
-  digitalWrite(in1, LOW);
-  digitalWrite(in2, HIGH);
-  digitalWrite(in3, LOW);
-  digitalWrite(in4, LOW);
-  delay(rychlost);
-}
-void krok4()
-{
-  digitalWrite(in1, LOW);
-  digitalWrite(in2, HIGH);
-  digitalWrite(in3, HIGH);
-  digitalWrite(in4, LOW);
-  delay(rychlost);
-}
-void krok5()
-{
-  digitalWrite(in1, LOW);
-  digitalWrite(in2, LOW);
-  digitalWrite(in3, HIGH);
-  digitalWrite(in4, LOW);
-  delay(rychlost);
-}
-void krok6()
-{
-  digitalWrite(in1, LOW);
-  digitalWrite(in2, LOW);
-  digitalWrite(in3, HIGH);
-  digitalWrite(in4, HIGH);
-  delay(rychlost);
-}
-void krok7()
-{
-  digitalWrite(in1, LOW);
-  digitalWrite(in2, LOW);
-  digitalWrite(in3, LOW);
-  digitalWrite(in4, HIGH);
-  delay(rychlost);
-}
-void krok8()
-{
-  digitalWrite(in1, HIGH);
-  digitalWrite(in2, LOW);
-  digitalWrite(in3, LOW);
-  digitalWrite(in4, HIGH);
-  delay(rychlost);
-}
 
-void rotacePoSmeru()
-{
-  krok1();
-  krok2();
-  krok3();
-  krok4();
-  krok5();
-  krok6();
-  krok7();
-  krok8();
-}
 
-void rotaceProtiSmeru()
-{
-  krok8();
-  krok7();
-  krok6();
-  krok5();
-  krok4();
-  krok3();
-  krok2();
-  krok1();
-}
 
-void rotace()
-{
-  for (int i = 0; i < (uhel * 64 / 45); i++)
-  {
-    rotacePoSmeru();
-  }
-
-  for (int i = 0; i < (uhel * 64 / 45); i++)
-  {
-    rotaceProtiSmeru();
-  }
-
-  // pauza po dobu 1 vteřiny
+void motorek() {
+  Stepper myStepper = Stepper(stepsPerRevolution, 5, 19, 18, 21);
+ myStepper.setSpeed(1);
+  // Step one revolution in one direction:
+  Serial.println("clockwise");
+  myStepper.step(stepsPerRevolution);
+  delay(500);
+  // Step one revolution in the other direction:
+  Serial.println("counterclockwise");
+  myStepper.step(-stepsPerRevolution);
+  delay(500);
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-
-
-
-
-
-
-
-
 String getTime()
 {
   String time = timeClient.getFormattedTime();
@@ -192,7 +87,7 @@ void printLocalTime()
   Serial.println(porovnani);
   if (inputCas == porovnani)
   {
-    rotace();  
+    motorek();  
     delay(70000);
   }
 }
@@ -214,7 +109,7 @@ void pripojeni()
 
   // Serial port for debugging purposes
   Serial.begin(115200);
-  pinMode(in1, OUTPUT);
+  //pinMode(in1, OUTPUT);
 
   // Initialize SPIFFS
   if (!SPIFFS.begin(true))
@@ -238,10 +133,6 @@ void pripojeni()
 void setup()
 {
   Serial.begin(115200);
-  pinMode(in1, OUTPUT);
-  pinMode(in2, OUTPUT);
-  pinMode(in3, OUTPUT);
-  pinMode(in4, OUTPUT);
 
   pripojeni();
 
@@ -252,7 +143,10 @@ void setup()
 
   // Route to load style.css file
   server.on("/style.css", HTTP_GET, [](AsyncWebServerRequest *request) {
-    request->send(SPIFFS, "/style.css", "text/css", "/script.js");
+    request->send(SPIFFS, "/style.css", "text/css");
+  });
+    server.on("/script.js", HTTP_GET, [](AsyncWebServerRequest *request){
+    request->send(SPIFFS, "/script.js", "text/css");
   });
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////
   server.on("/hodiny", HTTP_POST, [](AsyncWebServerRequest *request) {
