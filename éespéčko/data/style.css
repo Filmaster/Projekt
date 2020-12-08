@@ -4,25 +4,52 @@ html {
     margin: 0px auto;
     text-align: center;
   }
+  body{
+    background-color: #a7a7a5;
+  }
   h1{
-    color: #0F3376;
-    padding: 2vh;
+    color: red;
+    padding: 3vh;
+    font-size: 50px;
+    font-weight: 800;
   }
-  p{
-    font-size: 1.5rem;
-  }
-  .button {
-    display: inline-block;
-    background-color: #008CBA;
-    border: none;
-    border-radius: 4px;
-    color: white;
-    padding: 16px 40px;
-    text-decoration: none;
+  h2{
     font-size: 30px;
-    margin: 2px;
-    cursor: pointer;
   }
-  .button2 {
-    background-color: #f44336;
+
+  p{
+    font-size: 4.5rem;
   }
+  
+header
+{
+    background-color:#81817e;
+    text-align: center;
+}
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+}
+
+li {
+  float: left;
+}
+
+li a {
+  display: block;
+  color: red;
+  text-align: center;
+  padding: 15px 15px;
+  text-decoration: none;
+}
+
+li a:hover {
+  background-color: #111;
+}
+.hod{
+  text-align: center;
+  font-size: 20px;
+}

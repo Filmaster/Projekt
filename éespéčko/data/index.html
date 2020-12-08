@@ -1,69 +1,84 @@
 <!DOCTYPE html>
 <html>
+
 <head>
+
   <title>ESP32 Web Server</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="icon" href="data:,">
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="stylesheet" type="text/css" href="style.css">
-
+  <script src="script.js"></script>
 </head>
-<script>
-  var time = new Date();
-  console.log(time.getHours() + ":" + time.getMinutes() + ":" + time.getSeconds());
-  document.getElementById("cas").innerHTML = time.getHours() + ":" + time.getMinutes() + ":" + time.getSeconds();
-</script>
-<body>
- 
 
-  <div class="row center justify-content-center">
-  </div>
+<body >
+  <header>
+    <ul>
+      <li><a href="#home">Home</a></li>
+      <li><a href="#news">Rozvrh</a></li>
+      <li><a href="#contact">Kontakt</a></li>
+      <li style="float:right"><a class="active" href="#about">About</a></li>
+    </ul>
 
-  <h1> Automaticke krmitko</h1>
- <!-- <p id="aktualniCas"></p>-->
-  <span id="hod"></span>
 
-  <h2>Nataveni davkovace </h2>
-  <h4>Prvni krmeni</h4>
-  <title>ESP Input Form</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  </head><body>
-  <form action="/get">
-    Hodiny: <input type="time" class="form-control" id="cas1" name="input1" value required>
-     <input  type="submit" value="Submit">
-  </form>
-  <br>
+    <div class="row center justify-content-center">
+    </div>
+
+    <h1> Automaticke krmitko</h1>
+    <!-- <p id="aktualniCas"></p>-->
+    <h2 id="hod" class="text-center">Hodiny</h2>
+
+
+  </header>
+  <main>
+
+
+    <h2 class="text-center">Nataveni davkovace </h2>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <label for="den">Den</label>
+          <select class="browser-default custom-select" id="den">
+            <option value="pondeli">Pondeli</option>
+            <option value="utery">Utery</option>
+            <option value="streda">Streda</option>
+            <option value="ctvrtek">Ctvrtek</option>
+            <option value="patek">Patek</option>
+            <option value="sobota">Sobota</option>
+            <option value="nedele">Nedele</option>
+          </select>
+        </div>
+        <div class="col-md-6">
+          <form action="/get">
+            Hodiny: <input type="time" class="form-control" id="cas1" name="input1" value required>
+            <input type="submit" value="Submit">
+          </form>
+          <br>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer>
+  
+  </footer>
+
+  <script>
+    setInterval(function () {
+      var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+          document.getElementById("hod").innerHTML = this.responseText;
+        }
+      };
+      xhttp.open("GET", "/hod", true);
+      xhttp.send();
+    }, 1000);
+   </script>
+ <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+ <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
 </body>
 
-
-
-<script src="script.js"></script>
-
-<script>
-function goBack() {
-  window.history.back();
-}
-</script>
-<script>
-  setInterval(function ( ) {
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-      if (this.readyState == 4 && this.status == 200) {
-        document.getElementById("hod").innerHTML = this.responseText;
-      }
-    };
-    xhttp.open("GET", "/hod", true);
-    xhttp.send();
-  }, 1000 ) ; 
-   function setHodiny() {
-    var hh = $('#hodinyTest').val();
-      $.post("/hodiny", { hodiny: hh });
-  }
-  </script>
- 
-
 </html>
-
-
-
-

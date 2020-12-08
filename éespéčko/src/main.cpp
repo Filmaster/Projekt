@@ -145,14 +145,14 @@ void setup()
   server.on("/style.css", HTTP_GET, [](AsyncWebServerRequest *request) {
     request->send(SPIFFS, "/style.css", "text/css");
   });
-    server.on("/script.js", HTTP_GET, [](AsyncWebServerRequest *request){
+  server.on("/script.js", HTTP_GET, [](AsyncWebServerRequest *request){
     request->send(SPIFFS, "/script.js", "text/css");
-  });
+      });
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-  server.on("/hodiny", HTTP_POST, [](AsyncWebServerRequest *request) {
+  /*server.on("/hodiny", HTTP_POST, [](AsyncWebServerRequest *request) {
     inputCas = request->arg("hodiny").toInt();
     request->send_P(200, "text/json", "{\"result\":\"ok\"}");
-  });
+  });*/
 
   server.on("/hod", HTTP_GET, [](AsyncWebServerRequest *request) {
     request->send_P(200, "text/plain", porovnaniCas);
@@ -191,12 +191,7 @@ void setup()
       inputMessage4 = request->getParam(PARAM_INPUT_4)->value();
       inputParam = PARAM_INPUT_4;
     }
-    else if (request->hasParam(PARAM_INPUT_5))
-    {
-      inputMessage5 = request->getParam(PARAM_INPUT_5)->value();
-      inputParam = PARAM_INPUT_3;
-    }
-    else
+     else
     {
       inputMessage1 = "No message sent";
       inputMessage2 = "No message sent";
