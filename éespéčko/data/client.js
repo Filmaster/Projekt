@@ -5,23 +5,23 @@ $(function () {
     function addGroup(index = 0, obj = { cas: '', davka: '', datum: '' }) {
         return `
         <div class="form-group row p-1 group-time" id="group-${index}">
-            <label class="col-sm-1">Cas krmeni</label>
-            <div class="col-sm-2">
-                <input type="time" class="form-control" required name="cas" id="cas-${index}" value="${obj.cas}">
-            </div>
-            <label class="col-sm-1">Velikost davky</label>
-            <div class="col-sm-2">
-                <input type="number" class="form-control" required name="davka" id="davka-${index}" value="${obj.davka}" min="1" max="5">
-            </div>
-            <label class="col-sm-1">Den</label>
-            <div class="col-sm-3">
-                <input type="date" class="form-control" required name="datum" id="datum-${index}" value="${obj.datum}">
-            </div>
-            <div class="col-sm-2">
-                <button type="button" class="btn btn-success poslat" id="poslat-${index}">Odeslat</button>
-                <button type="button" class="btn btn-danger delete" id="delete-${index}">Smazat</button>
-            </div>
-        </div>
+          <label class="col-sm-1">Cas krmeni</label>
+          <div class="col-sm-2">
+              <input type="time" class="form-control" required name="cas" id="hodiny${index}" value="${obj.cas}">
+          </div>
+          <label class="col-sm-1">Velikost davky</label>
+          <div class="col-sm-2">
+              <input type="number" class="form-control" required name="davka" id="davka${index}" value="${obj.davka}" min="1" max="5">
+          </div>
+          <label class="col-sm-1">Den</label>
+          <div class="col-sm-3">
+              <input type="date" class="form-control" required name="datum" id="datum${index}" value="${obj.datum}">
+          </div>
+          <div class="col-sm-2">
+            <button type="button" class="btn btn-success" value="Submit" onclick="ulozCas()">Ulozit cas</button>
+              <button type="button" class="btn btn-danger delete" id="delete-${index}">Smazat</button>
+          </div>
+      </div>
         `;
     }
 
@@ -56,3 +56,14 @@ $(function () {
     get();
 
 })
+
+function ulozCas() {
+    for(i=0;i<=index;i++){
+    var ho = $('#hodiny').val();
+    var dd = $('#davka').val();
+    var da = $('#datum').val();
+    $.post("/hodiny", { hodiny: ho });
+    $.post("/davka", { davka: dd });
+    $.post("/datum", { datum: da });
+    }
+  }

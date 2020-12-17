@@ -23,12 +23,31 @@ String timeStamp;
 int casovac = 50000;
 Scheduler runner;
 String inputHodiny;
-String inputDavka;
+int inputDavka;
 String inputDatum;
 int porovnaniHod = 1;
 int porovnaniMin = 25;
 struct tm timeinfo;
 char porovnaniCas[8];
+
+typedef struct
+{
+  String hodiny;
+  int davka;
+  String datum;
+} DATA;
+DATA *data = NULL;
+
+void zapis()
+{
+  int i;
+  data[1].hodiny = inputHodiny;
+  data[1].hodiny = inputDavka;
+  data[1].hodiny = inputDatum;
+  Serial.println(data[1].hodiny);
+  Serial.println(data[1].hodiny);
+  Serial.println(data[1].hodiny);
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -41,7 +60,7 @@ void ziskani()
     request->send_P(200, "text/json", "{\"result\":\"ok\"}");
   });
   server.on("/davka", HTTP_POST, [](AsyncWebServerRequest *request) {
-    inputDavka = request->arg("davka");
+    inputDavka = request->arg("davka").toInt();
     Serial.println(inputDavka);
     request->send_P(200, "text/json", "{\"result\":\"ok\"}");
   });
@@ -78,9 +97,6 @@ void spifs()
   // Route to load style.css file
   server.on("/style.css", HTTP_GET, [](AsyncWebServerRequest *request) {
     request->send(SPIFFS, "/style.css", "text/css");
-  });
-  server.on("/main.js", HTTP_GET, [](AsyncWebServerRequest *request) {
-    request->send(SPIFFS, "/main.js", "text/css");
   });
   server.on("/client.js", HTTP_GET, [](AsyncWebServerRequest *request) {
     request->send(SPIFFS, "/client.js", "text/css");
@@ -151,21 +167,6 @@ void pripojeni()
   Serial.println(WiFi.localIP());
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 void setup()
 {
   Serial.begin(115200);
@@ -183,5 +184,9 @@ void loop()
 {
   delay(1000);
   printLocalTime();
+  //Serial.println(inputHodiny);
+  // Serial.println(inputDavka);
+  //  Serial.println(inputDatum);
+
   //getTime();
 }
