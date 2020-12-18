@@ -1,6 +1,7 @@
+    let index = 0;
 $(function () {
     /* Inicializace proměnné index, která unikátně identifikuje novou skupinu prvků */
-    let index = 0;
+
     /* Funkce, která přidá skupinu prvků do formuláře */
     function addGroup(index = 0, obj = { cas: '', davka: '', datum: '' }) {
         return `
@@ -18,7 +19,6 @@ $(function () {
               <input type="date" class="form-control" required name="datum" id="datum${index}" value="${obj.datum}">
           </div>
           <div class="col-sm-2">
-            <button type="button" class="btn btn-success" value="Submit" onclick="ulozCas()">Ulozit cas</button>
               <button type="button" class="btn btn-danger delete" id="delete-${index}">Smazat</button>
           </div>
       </div>
@@ -34,9 +34,9 @@ $(function () {
             /* Příklad traverzování - vyhledá se a odstraní celý element - 
             předek tlačítka Smazat, který je oddílem s třídou group-time */
             $(this).parents('div.group-time').remove();
-        });
+        });  
+           index++;
         /* Index se po přidání prvku zvýší, aby se zajistila jeho unikátnost */
-        index++;
     });
 
     /* Pole pro uložení dat z formuláře */
@@ -57,13 +57,20 @@ $(function () {
 
 })
 
-function ulozCas() {
-    for(i=0;i<=index;i++){
-    var ho = $('#hodiny').val();
-    var dd = $('#davka').val();
-    var da = $('#datum').val();
+$('#send').on('click', function () {
+    let i=0;
+for(i=0;i<index;i++){
+    var ho = $('#hodiny'+i).val();
+    var dd = $('#davka'+i).val();
+    var da = $('#datum'+i).val();
+    console.log(index);
+    console.log(i);
+    console.log(ho);
+    console.log(dd);
+    console.log(da);
     $.post("/hodiny", { hodiny: ho });
     $.post("/davka", { davka: dd });
     $.post("/datum", { datum: da });
-    }
-  }
+}
+
+  });

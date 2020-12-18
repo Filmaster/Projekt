@@ -23,13 +23,14 @@ String timeStamp;
 int casovac = 50000;
 Scheduler runner;
 String inputHodiny;
-int inputDavka;
+String inputDavka;
 String inputDatum;
+int inputIndex=0;
 int porovnaniHod = 1;
 int porovnaniMin = 25;
 struct tm timeinfo;
 char porovnaniCas[8];
-
+int i=0;
 typedef struct
 {
   String hodiny;
@@ -37,17 +38,6 @@ typedef struct
   String datum;
 } DATA;
 DATA *data = NULL;
-
-void zapis()
-{
-  int i;
-  data[1].hodiny = inputHodiny;
-  data[1].hodiny = inputDavka;
-  data[1].hodiny = inputDatum;
-  Serial.println(data[1].hodiny);
-  Serial.println(data[1].hodiny);
-  Serial.println(data[1].hodiny);
-}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -60,7 +50,7 @@ void ziskani()
     request->send_P(200, "text/json", "{\"result\":\"ok\"}");
   });
   server.on("/davka", HTTP_POST, [](AsyncWebServerRequest *request) {
-    inputDavka = request->arg("davka").toInt();
+    inputDavka = request->arg("davka");
     Serial.println(inputDavka);
     request->send_P(200, "text/json", "{\"result\":\"ok\"}");
   });
@@ -69,6 +59,12 @@ void ziskani()
     Serial.println(inputDatum);
     request->send_P(200, "text/json", "{\"result\":\"ok\"}");
   });
+    server.on("/index", HTTP_POST, [](AsyncWebServerRequest *request) {
+    inputIndex = request->arg("datum").toInt();
+    Serial.println(inputIndex);
+    request->send_P(200, "text/json", "{\"result\":\"ok\"}");
+  });
+  i++;
 }
 const int stepsPerRevolution = 1024; //2048;
 void motorek()
@@ -167,6 +163,17 @@ void pripojeni()
   Serial.println(WiFi.localIP());
 }
 
+
+
+
+
+
+
+
+
+
+
+
 void setup()
 {
   Serial.begin(115200);
@@ -184,7 +191,8 @@ void loop()
 {
   delay(1000);
   printLocalTime();
-  //Serial.println(inputHodiny);
+
+  Serial.println(i);
   // Serial.println(inputDavka);
   //  Serial.println(inputDatum);
 
