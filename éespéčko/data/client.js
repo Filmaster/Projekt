@@ -63,7 +63,6 @@ for(i=0;i<index;i++){
     var ho = $('#hodiny'+i).val();
     var dd = $('#davka'+i).val();
     var da = $('#datum'+i).val();
-    console.log(index);
     console.log(i);
     console.log(ho);
     console.log(dd);
@@ -71,6 +70,7 @@ for(i=0;i<index;i++){
     $.post("/hodiny", { hodiny: ho });
     $.post("/davka", { davka: dd });
     $.post("/datum", { datum: da });
+
 }
 
   });

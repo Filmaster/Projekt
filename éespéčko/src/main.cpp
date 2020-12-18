@@ -25,7 +25,7 @@ Scheduler runner;
 String inputHodiny;
 String inputDavka;
 String inputDatum;
-int inputIndex=0;
+String inputIndex;
 int porovnaniHod = 1;
 int porovnaniMin = 25;
 struct tm timeinfo;
@@ -60,7 +60,7 @@ void ziskani()
     request->send_P(200, "text/json", "{\"result\":\"ok\"}");
   });
     server.on("/index", HTTP_POST, [](AsyncWebServerRequest *request) {
-    inputIndex = request->arg("datum").toInt();
+    inputIndex = request->arg("datum");
     Serial.println(inputIndex);
     request->send_P(200, "text/json", "{\"result\":\"ok\"}");
   });
@@ -191,8 +191,6 @@ void loop()
 {
   delay(1000);
   printLocalTime();
-
-  Serial.println(i);
   // Serial.println(inputDavka);
   //  Serial.println(inputDatum);
 
