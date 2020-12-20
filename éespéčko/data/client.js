@@ -70,8 +70,6 @@ $('#send').on('click', function () {
         $.post("/hodiny", { hodiny: ho });
         $.post("/davka", { davka: dd });
         $.post("/datum", { datum: da });
-        $.post("/i", i);
-
+        $.post("/i", { i, i });
     }
-
 });

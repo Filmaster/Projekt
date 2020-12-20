@@ -25,13 +25,12 @@ Scheduler runner;
 String inputHodiny;
 String inputDavka;
 String inputDatum;
-int inputIndex=0;
+int inputIndex = 0;
 int porovnaniHod = 1;
 int porovnaniMin = 25;
 struct tm timeinfo;
 char porovnaniCas[8];
-int i=0;
-
+int i = 0;
 
 typedef struct
 {
@@ -39,36 +38,50 @@ typedef struct
   String davka;
   String datum;
 } DATA;
- DATA * data = (DATA*) malloc(100);
-
-
-
+DATA *data = (DATA *)malloc(100);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void vypis()
+{
+  int ind = 0;
+  for (ind = 0; ind < 10; ind++)
+  {
+    Serial.println(data[ind].hodiny);
+    Serial.println(data[ind].davka);
+    Serial.println(data[ind].datum);
+  }
+}
+
 void ziskani()
 {
+  server.on("/i", HTTP_POST, [](AsyncWebServerRequest *request) {
+    inputIndex = request->arg("i").toInt();
+     Serial.println(inputIndex);
+    request->send_P(200, "text/plain", "{\"result\":\"ok\"}");
+  });
   server.on("/hodiny", HTTP_POST, [](AsyncWebServerRequest *request) {
     inputHodiny = request->arg("hodiny");
+    //data[inputIndex].hodiny = inputHodiny;
     Serial.println(inputHodiny);
     request->send_P(200, "text/json", "{\"result\":\"ok\"}");
   });
   server.on("/davka", HTTP_POST, [](AsyncWebServerRequest *request) {
     inputDavka = request->arg("davka");
-    Serial.println(inputDavka);
+    //data[inputIndex].davka = inputDavka;
+     Serial.println(inputDavka);
     request->send_P(200, "text/json", "{\"result\":\"ok\"}");
   });
   server.on("/datum", HTTP_POST, [](AsyncWebServerRequest *request) {
     inputDatum = request->arg("datum");
+   // data[inputIndex].datum = inputDatum;
     Serial.println(inputDatum);
     request->send_P(200, "text/json", "{\"result\":\"ok\"}");
   });
-    server.on("/i", HTTP_POST, [](AsyncWebServerRequest *request) {
-    inputIndex = request->arg("i").toInt();
-    Serial.println(inputIndex);
-    request->send_P(200, "text/plain", "{\"result\":\"ok\"}");
-  });
+  //data[inputIndex].hodiny = inputHodiny;
+  //data[inputIndex].davka = inputDavka;
+  //data[inputIndex].datum = inputDatum;
 }
 const int stepsPerRevolution = 1024; //2048;
 void motorek()
@@ -166,17 +179,6 @@ void pripojeni()
   // Print ESP32 Local IP Address
   Serial.println(WiFi.localIP());
 }
-
-
-
-
-
-
-
-
-
-
-
 
 void setup()
 {
