@@ -25,19 +25,24 @@ Scheduler runner;
 String inputHodiny;
 String inputDavka;
 String inputDatum;
-String inputIndex;
+int inputIndex=0;
 int porovnaniHod = 1;
 int porovnaniMin = 25;
 struct tm timeinfo;
 char porovnaniCas[8];
 int i=0;
+
+
 typedef struct
 {
   String hodiny;
-  int davka;
+  String davka;
   String datum;
 } DATA;
-DATA *data = NULL;
+ DATA * data = (DATA*) malloc(100);
+
+
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -59,12 +64,11 @@ void ziskani()
     Serial.println(inputDatum);
     request->send_P(200, "text/json", "{\"result\":\"ok\"}");
   });
-    server.on("/index", HTTP_POST, [](AsyncWebServerRequest *request) {
-    inputIndex = request->arg("datum");
+    server.on("/i", HTTP_POST, [](AsyncWebServerRequest *request) {
+    inputIndex = request->arg("i").toInt();
     Serial.println(inputIndex);
-    request->send_P(200, "text/json", "{\"result\":\"ok\"}");
+    request->send_P(200, "text/plain", "{\"result\":\"ok\"}");
   });
-  i++;
 }
 const int stepsPerRevolution = 1024; //2048;
 void motorek()
@@ -191,6 +195,7 @@ void loop()
 {
   delay(1000);
   printLocalTime();
+
   // Serial.println(inputDavka);
   //  Serial.println(inputDatum);
 

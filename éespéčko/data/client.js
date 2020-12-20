@@ -1,4 +1,4 @@
-    let index = 0;
+let index = 0;
 $(function () {
     /* Inicializace proměnné index, která unikátně identifikuje novou skupinu prvků */
 
@@ -34,8 +34,8 @@ $(function () {
             /* Příklad traverzování - vyhledá se a odstraní celý element - 
             předek tlačítka Smazat, který je oddílem s třídou group-time */
             $(this).parents('div.group-time').remove();
-        });  
-           index++;
+        });
+        index++;
         /* Index se po přidání prvku zvýší, aby se zajistila jeho unikátnost */
     });
 
@@ -43,13 +43,13 @@ $(function () {
     let data = [];
 
     /* Validační funkce pro ověření platnosti zadaných údajů */
-    function validateData(obj) {
-        /* Z obou časových stringů odebere dvojtečku a porovná, zda je konečný údaj větší */
-        /* Musí být zadáno také neprázdné datum */
+  /*  function validateData(obj) {
+        // Z obou časových stringů odebere dvojtečku a porovná, zda je konečný údaj větší 
+        // Musí být zadáno také neprázdné datum 
         return (obj.cas.replace(':', '') < obj.davka.replace(':', '')) && obj.datum;
-    }
+    }*/
 
-    
+
 
 
     /* Načtení dat ze serveru */
@@ -58,19 +58,20 @@ $(function () {
 })
 
 $('#send').on('click', function () {
-    let i=0;
-for(i=0;i<index;i++){
-    var ho = $('#hodiny'+i).val();
-    var dd = $('#davka'+i).val();
-    var da = $('#datum'+i).val();
-    console.log(i);
-    console.log(ho);
-    console.log(dd);
-    console.log(da);
-    $.post("/hodiny", { hodiny: ho });
-    $.post("/davka", { davka: dd });
-    $.post("/datum", { datum: da });
+    let i = 0;
+    for (i = 0; i < index; i++) {
+        var ho = $('#hodiny' + i).val();
+        var dd = $('#davka' + i).val();
+        var da = $('#datum' + i).val();
+        console.log(i);
+        console.log(ho);
+        console.log(dd);
+        console.log(da);
+        $.post("/hodiny", { hodiny: ho });
+        $.post("/davka", { davka: dd });
+        $.post("/datum", { datum: da });
+        $.post("/i", i);
 
-}
+    }
 
-  });
+});
