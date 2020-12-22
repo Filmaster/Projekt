@@ -23,7 +23,7 @@ String timeStamp;
 int casovac = 50000;
 Scheduler runner;
 String inputHodiny;
-String inputDavka;
+int inputDavka;
 String inputDatum;
 int inputIndex = 0;
 int porovnaniHod = 1;
@@ -35,7 +35,7 @@ int i = 0;
 typedef struct
 {
   String hodiny;
-  String davka;
+  int davka;
   String datum;
 } DATA;
 DATA *data = (DATA *)malloc(100);
@@ -46,7 +46,7 @@ DATA *data = (DATA *)malloc(100);
 void vypis()
 {
   int ind = 0;
-  for (ind = 0; ind < 10; ind++)
+  for (ind = 0; ind < 4; ind++)
   {
     Serial.println(data[ind].hodiny);
     Serial.println(data[ind].davka);
@@ -58,27 +58,31 @@ void ziskani()
 {
   server.on("/i", HTTP_POST, [](AsyncWebServerRequest *request) {
     inputIndex = request->arg("i").toInt();
-     Serial.println(inputIndex);
+    Serial.println(inputIndex);
     request->send_P(200, "text/plain", "{\"result\":\"ok\"}");
   });
+  delay(10);
   server.on("/hodiny", HTTP_POST, [](AsyncWebServerRequest *request) {
-    inputHodiny = request->arg("hodiny");
-    //data[inputIndex].hodiny = inputHodiny;
-    Serial.println(inputHodiny);
-    request->send_P(200, "text/json", "{\"result\":\"ok\"}");
+    data[inputIndex].hodiny = request->arg("hodiny");
+    //strcpy(data[inputIndex].hodiny,inputHodiny);
+    Serial.println(data[inputIndex].hodiny);
+    request->send_P(200, "text/plain", "{\"result\":\"ok\"}");
   });
   server.on("/davka", HTTP_POST, [](AsyncWebServerRequest *request) {
-    inputDavka = request->arg("davka");
-    //data[inputIndex].davka = inputDavka;
-     Serial.println(inputDavka);
-    request->send_P(200, "text/json", "{\"result\":\"ok\"}");
+    data[inputIndex].davka = request->arg("davka").toInt();
+    // data[inputIndex].davka = inputDavka;
+    Serial.println(data[inputIndex].davka);
+    request->send_P(200, "text/plain", "{\"result\":\"ok\"}");
   });
   server.on("/datum", HTTP_POST, [](AsyncWebServerRequest *request) {
-    inputDatum = request->arg("datum");
-   // data[inputIndex].datum = inputDatum;
-    Serial.println(inputDatum);
-    request->send_P(200, "text/json", "{\"result\":\"ok\"}");
+    data[inputIndex].datum = request->arg("datum");
+    //data[inputIndex].datum = inputDatum;
+    Serial.println(data[inputIndex].datum);
+    request->send_P(200, "text/plain", "{\"result\":\"ok\"}");
   });
+
+  // vypis();
+
   //data[inputIndex].hodiny = inputHodiny;
   //data[inputIndex].davka = inputDavka;
   //data[inputIndex].datum = inputDatum;
@@ -95,7 +99,6 @@ void motorek()
   // Step one revolution in the other direction:
   Serial.println("counterclockwise");
   myStepper.step(-stepsPerRevolution);
-  delay(500);
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -125,7 +128,9 @@ String getTime()
 
 void printLocalTime()
 {
+  char den[15];
   String porovnani;
+  String denporovnani;
   struct tm timeinfo;
   if (!getLocalTime(&timeinfo))
   {
@@ -133,13 +138,27 @@ void printLocalTime()
     return;
   }
   Serial.println(&timeinfo, "%A, %B %d %Y %H:%M:%S");
-
   strftime(porovnaniCas, 6, "%H:%M", &timeinfo);
+  strftime(den, 10, "%A", &timeinfo);
   porovnani = porovnaniCas;
+  denporovnani = den;
   //strftime(porovnaniMin,3, "%M", &timeinfo);
-  // strftime(timeWeekDay,10, "%A", &timeinfo);
-  //Serial.println(timeWeekDay);
-  Serial.println(porovnani);
+  //Serial.println(den);
+  // Serial.println(porovnani);
+  //Serial.println(data[0].hodiny);
+  int x = 0;
+  for (x = 0; x < inputIndex; x++)
+  {
+    if (denporovnani == data[x].datum)
+    {
+      if (porovnani == data[x].hodiny)
+      {
+        //motorek();
+        Serial.println("Motorek jede!\n");
+        delay(61000);
+      }
+    }
+  }
 }
 void pripojeni()
 {
@@ -180,6 +199,16 @@ void pripojeni()
   Serial.println(WiFi.localIP());
 }
 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 void setup()
 {
   Serial.begin(115200);
@@ -197,9 +226,6 @@ void loop()
 {
   delay(1000);
   printLocalTime();
-
-  // Serial.println(inputDavka);
-  //  Serial.println(inputDatum);
-
+  //vypis();
   //getTime();
 }

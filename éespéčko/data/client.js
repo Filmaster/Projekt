@@ -16,7 +16,16 @@ $(function () {
           </div>
           <label class="col-sm-1">Den</label>
           <div class="col-sm-3">
-              <input type="date" class="form-control" required name="datum" id="datum${index}" value="${obj.datum}">
+          <select name="dny" id="datum${index}">
+          <option value="Monday">Pondeli</option>
+          <option value="Tuesday">Utery</option>
+          <option value="Wednesday">Streda</option>
+          <option value="Thursday">Ctvrtek</option>
+          <option value="Friday">Patek</option>
+          <option value="Saturday">Sobota</option>
+          <option value="Sunday">Nedele</option>
+        </select>
+           
           </div>
           <div class="col-sm-2">
               <button type="button" class="btn btn-danger delete" id="delete-${index}">Smazat</button>
