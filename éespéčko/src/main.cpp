@@ -1,11 +1,11 @@
 #include "Arduino.h"
-#include "WiFi.h"
+//#include "WiFi.h"
 #include "ESPAsyncWebServer.h"
 #include "SPIFFS.h"
-#include <ArduinoJson.h>
+//#include <ArduinoJson.h>
 #include <NTPClient.h>
-#include <WiFiUdp.h>
-#include <TaskScheduler.h>
+//#include <WiFiUdp.h>
+//#include <TaskScheduler.h>
 #include <Stepper.h>
 #include "time.h"
 #define CASOVAC 5000
@@ -21,7 +21,6 @@ String formattedDate;
 String dayStamp;
 String timeStamp;
 int casovac = 50000;
-Scheduler runner;
 String inputHodiny;
 int inputDavka;
 String inputDatum;
@@ -64,28 +63,19 @@ void ziskani()
   delay(10);
   server.on("/hodiny", HTTP_POST, [](AsyncWebServerRequest *request) {
     data[inputIndex].hodiny = request->arg("hodiny");
-    //strcpy(data[inputIndex].hodiny,inputHodiny);
     Serial.println(data[inputIndex].hodiny);
     request->send_P(200, "text/plain", "{\"result\":\"ok\"}");
   });
   server.on("/davka", HTTP_POST, [](AsyncWebServerRequest *request) {
     data[inputIndex].davka = request->arg("davka").toInt();
-    // data[inputIndex].davka = inputDavka;
     Serial.println(data[inputIndex].davka);
     request->send_P(200, "text/plain", "{\"result\":\"ok\"}");
   });
   server.on("/datum", HTTP_POST, [](AsyncWebServerRequest *request) {
     data[inputIndex].datum = request->arg("datum");
-    //data[inputIndex].datum = inputDatum;
     Serial.println(data[inputIndex].datum);
     request->send_P(200, "text/plain", "{\"result\":\"ok\"}");
   });
-
-  // vypis();
-
-  //data[inputIndex].hodiny = inputHodiny;
-  //data[inputIndex].davka = inputDavka;
-  //data[inputIndex].datum = inputDatum;
 }
 const int stepsPerRevolution = 1024; //2048;
 void motorek()
@@ -132,71 +122,69 @@ void printLocalTime()
   String porovnani;
   String denporovnani;
   struct tm timeinfo;
+  // Jestliže nebyl získán čas z NTP serveru napíše to hlášku že nebyl získan čas
   if (!getLocalTime(&timeinfo))
   {
-    Serial.println("Failed to obtain time");
+    Serial.println("Selhání získání času.");
     return;
   }
+  // Vypíše získaný čas v celé jeho podobě (den měsíc...)
   Serial.println(&timeinfo, "%A, %B %d %Y %H:%M:%S");
+  // nakoopíruje mi do mojí proměnné současné hodiny a minuty
   strftime(porovnaniCas, 6, "%H:%M", &timeinfo);
+  
+  // to samé jako ta předchozí jenom nakopíruje pouze den
   strftime(den, 10, "%A", &timeinfo);
   porovnani = porovnaniCas;
   denporovnani = den;
-  //strftime(porovnaniMin,3, "%M", &timeinfo);
-  //Serial.println(den);
-  // Serial.println(porovnani);
-  //Serial.println(data[0].hodiny);
+  Serial.println(denporovnani);
+  Serial.println(porovnani);
   int x = 0;
-  for (x = 0; x < inputIndex; x++)
+  // standartní funkce for která mi projede celé DATA od hodnoty 0 do hodnoty která je menší nebo rovna indexu.
+  for (x = 0; x <= inputIndex; x++)
   {
+    //jestliže je den který jsme vložili do web serveru ten stejný který je dnes
     if (denporovnani == data[x].datum)
     {
+      // a zároven je i čas zadaný na web serveru ten stejný jako čas současný
       if (porovnani == data[x].hodiny)
       {
-        //motorek();
+        // zapneme funkci motorek a zároven pro neopakování otevření zásobníku je zde nutný delay.
+        motorek();
         Serial.println("Motorek jede!\n");
         delay(61000);
       }
     }
   }
 }
+// Funkce pro pripojeni se k místní wifi síti
 void pripojeni()
 {
+  //vypis připojováni
   Serial.printf("Connecting to %s ", ssid);
+  //samotné pripojení pomocí ssid a hesla
   WiFi.begin(ssid, password);
+  //dokud nebude pripojeno bude to psát tečky co 0.5s
   while (WiFi.status() != WL_CONNECTED)
   {
     delay(500);
     Serial.print(".");
   }
+  //vypis připojeno
   Serial.println(" CONNECTED");
 
-  //init and get the time
-
   configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
+  //vyvolání funkce pro získání času
   getTime();
 
-  // Serial port for debugging purposes
   Serial.begin(115200);
-  //pinMode(in1, OUTPUT);
 
-  // Initialize SPIFFS
+  // Vyvolání SPIFFS
   if (!SPIFFS.begin(true))
   {
     Serial.println("An Error has occurred while mounting SPIFFS");
     return;
   }
-
-  // Connect to Wi-Fi
-  WiFi.begin(ssid, password);
-  while (WiFi.status() != WL_CONNECTED)
-  {
-    delay(1000);
-    Serial.println("Connecting to WiFi..");
-  }
-
-  // Print ESP32 Local IP Address
-  Serial.println(WiFi.localIP());
 }
 
 //
@@ -212,12 +200,12 @@ void pripojeni()
 void setup()
 {
   Serial.begin(115200);
-
   pripojeni();
   spifs();
   server.on("/hod", HTTP_GET, [](AsyncWebServerRequest *request) {
     request->send_P(200, "text/plain", porovnaniCas);
   });
+
   ziskani();
   server.begin();
 }
