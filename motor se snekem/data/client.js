@@ -50,17 +50,6 @@ $(function () {
 
     /* Pole pro uložení dat z formuláře */
     let data = [];
-
-    /* Validační funkce pro ověření platnosti zadaných údajů */
-  /*  function validateData(obj) {
-        // Z obou časových stringů odebere dvojtečku a porovná, zda je konečný údaj větší 
-        // Musí být zadáno také neprázdné datum 
-        return (obj.cas.replace(':', '') < obj.davka.replace(':', '')) && obj.datum;
-    }*/
-
-
-
-
     /* Načtení dat ze serveru */
     get();
 

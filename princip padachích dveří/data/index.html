@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <title>ESP32 Web Server</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="icon" href="data:,">
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<body >
+  <header>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="rozvrh.html">Rozvrh</a></li>
+      <li style="float:right"><a class="active" href="#about">About</a></li>
+    </ul>
+
+
+    <div class="row center justify-content-center">
+    </div>
+
+    <h1> Automaticke krmitko</h1>
+    <h2 id="hod" class="text-center">Hodiny</h2>
+
+
+  </header>
+  <main>
+    <div class="container mt-3 mb-3">
+        <h2 class="text-center border-bottom pb-3 mb-5 text-danger">Nastaveni</h2>
+        <form>
+            <div id="times">
+                
+            </div>
+            <div id="error" class="alert alert-danger d-none">Nenastavil jste udaje!</div>                    
+            <div class="form-group row">
+                <div class="offset-sm-1 col-sm-2">
+                    <button type="button" class="btn btn-primary" id="append">Pridat cas krmeni</button>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="offset-sm-1 col-sm-2">
+                    <button type="button" class="btn btn-success" id="send">Aktualizovat data</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</main>
+<footer>
+  
+  </footer>
+
+  <script>
+    setInterval(function () {
+      var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+          document.getElementById("hod").innerHTML = this.responseText;
+        }
+      };
+      xhttp.open("GET", "/hod", true);
+      xhttp.send();
+    }, 1000);
+   </script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+        <script src="client.js"></script>
+        <script src="main.js"></script>    
+</body>
+
+</html>
