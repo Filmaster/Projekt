@@ -63,8 +63,6 @@ void motorek(int pocetO, int pauza)
   /*Serial.println("clockwise");
   myStepper.step(stepsPerRevolution);
   */
-  //delay(500);
-
 
   // Step one revolution in the other direction:
   for(int i=0;i<=pocetO;i++){
@@ -111,6 +109,24 @@ void web()
     Serial.println(data[inputIndex].datum);
     request->send_P(200, "text/plain", "{\"result\":\"ok\"}");
   });
+
+
+
+/*
+    server.on("/hod", HTTP_GET, [](AsyncWebServerRequest *request) {
+    request->send_P(200, "text/plain", porovnaniCas);
+  });
+
+    server.on("/hodiny", HTTP_GET, [](AsyncWebServerRequest *request) {
+    request->send_P(200, "text/plain", data[inputIndex].hodiny);
+  });
+  server.on("/davka", HTTP_GET, [](AsyncWebServerRequest *request) {
+    request->send_P(200, "text/plain", data[inputIndex].davka);
+  });
+  server.on("/datum", HTTP_GET, [](AsyncWebServerRequest *request) {
+    request->send_P(200, "text/plain", data[inputIndex].datum);
+  });
+  */
 }
 
 String getTime()
@@ -164,31 +180,26 @@ switch (data[inputIndex].davka)
           int pauza;
           int otacky;
         case 1:
-          pauza = 0;
           otacky = 5;
           motorek(otacky, pauza);
           Serial.println("Motorek jede!  1\n");
           break;
         case 2:
-          pauza = 0;
           otacky = 10;
           motorek(otacky, pauza);
           Serial.println("Motorek jede!  2\n");
           break;
         case 3:
-          pauza = 0;
           otacky = 15;
           motorek(otacky, pauza);
           Serial.println("Motorek jede!  3\n");
           break;
         case 4:
-          pauza = 0;
           otacky = 20;
           motorek(otacky, pauza);
           Serial.println("Motorek jede!  4\n");
           break;
         case 5:
-          pauza = 0;
           otacky = 25;
           motorek(otacky, pauza);
           Serial.println("Motorek jede!  5\n");
@@ -259,51 +270,8 @@ unsigned long currentMillis = millis();
  if(currentMillis - previousMillis > interval) { 
     previousMillis = currentMillis;   
   printLocalTime();
-  //vypis();
-  //getTime();
  }
 }
 //ntp server zvolit
 // okomentovat server on
-// každy server on bude v jedne funkci
 // uložit do souboru
-
-
-
-/*
-        switch (data[inputIndex].davka)
-        {
-          int pauza;
-          int rychlost;
-        case 1:
-          pauza = 0;
-          rychlost = 10;
-          //motorek(rychlost, pauza);
-          Serial.println("Motorek jede!  1\n");
-          break;
-        case 2:
-          pauza = 0;
-          rychlost = 8;
-         // motorek(rychlost, pauza);
-          Serial.println("Motorek jede!  2\n");
-          break;
-        case 3:
-          pauza = 0;
-          rychlost = 8;
-          //motorek(rychlost, pauza);
-          Serial.println("Motorek jede!  3\n");
-          break;
-        case 4:
-          pauza = 0;
-          rychlost = 8;
-         // motorek(rychlost, pauza);
-          Serial.println("Motorek jede!  4\n");
-          break;
-        case 5:
-          pauza = 0;
-          rychlost = 8;
-         // motorek(rychlost, pauza);
-          Serial.println("Motorek jede!  5\n");
-          break;
-        }
-*/

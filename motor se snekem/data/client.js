@@ -55,6 +55,28 @@ $(function () {
 
 })
 
+function get() {
+    let i = 0;
+    for (i = 0; i < index; i++) {
+        var hoG = $('#hodiny' + i).val();
+        var ddG = $('#davka' + i).val();
+        var daG = $('#datum' + i).val();
+        console.log(iG);
+        console.log(hoG);
+        console.log(ddG);
+        console.log(daG);
+        $.get("/hodiny", { hodiny: ho });
+        $.get("/davka", { davka: dd });
+        $.get("/datum", { datum: da });
+        $.get("/i", { i, i });
+    }
+}
+
+
+
+
+
+
 $('#send').on('click', function () {
     let i = 0;
     for (i = 0; i < index; i++) {
@@ -69,5 +91,22 @@ $('#send').on('click', function () {
         $.post("/davka", { davka: dd });
         $.post("/datum", { datum: da });
         $.post("/i", { i, i });
+    }
+});
+
+$('#get').on('click', function () {
+    let i = 0;
+    for (i = 0; i < index; i++) {
+        var hoG = $('#hodiny' + i).val();
+        var ddG = $('#davka' + i).val();
+        var daG = $('#datum' + i).val();
+        console.log(i);
+        console.log(ho);
+        console.log(dd);
+        console.log(da);
+        $.get("/hodiny", { hodiny: ho });
+        $.get("/davka", { davka: dd });
+        $.get("/datum", { datum: da });
+        $.get("/i", { i, i });
     }
 });

@@ -1,6 +1,5 @@
 let index = 0;
 $(function () {
-    /* Inicializace proměnné index, která unikátně identifikuje novou skupinu prvků */
 
     /* Funkce, která přidá skupinu prvků do formuláře */
     function addGroup(index = 0, obj = { cas: '', davka: '', datum: '' }) {
@@ -43,6 +42,7 @@ $(function () {
             /* Příklad traverzování - vyhledá se a odstraní celý element - 
             předek tlačítka Smazat, který je oddílem s třídou group-time */
             $(this).parents('div.group-time').remove();
+
         });
         index++;
         /* Index se po přidání prvku zvýší, aby se zajistila jeho unikátnost */
@@ -55,16 +55,37 @@ $(function () {
 
 })
 
+
+//Funkce pro jednoduché přemazávání starých proměnných, takže při každém aktualizování dat je zajištěno i smazání dat starých.
 $('#send').on('click', function () {
     let i = 0;
     for (i = 0; i < index; i++) {
+        var ho = "-1";
+        var dd = "-1";
+        var da = "-1";
+        console.log(i);
+        console.log(ho);
+        console.log(dd);
+        console.log(da); 
+        $.post("/hodiny", { hodiny: ho });
+        $.post("/davka", { davka: dd });
+        $.post("/datum", { datum: da });
+        $.post("/i", { i, i });
+    }
+
+
+    //cyklus for pro zajisteni zaslani všech prvků formuláře
+    for (i = 0; i < index; i++) {
+        //získání hodnoty z daného prvku formuláře a uložení teto hodnoty do proměnné ho
         var ho = $('#hodiny' + i).val();
         var dd = $('#davka' + i).val();
         var da = $('#datum' + i).val();
         console.log(i);
+        //vypsání do konzole na webu (zapíná se F12)
         console.log(ho);
         console.log(dd);
         console.log(da);
+        //zaslání proměnné ho na esp kde se díky funkci server.on zpracuje 
         $.post("/hodiny", { hodiny: ho });
         $.post("/davka", { davka: dd });
         $.post("/datum", { datum: da });
