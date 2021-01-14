@@ -20,16 +20,9 @@ https://medium.com/i-learn-esp32-and-you-should-too/6-the-esp32-automatic-feeder
 Odkaz na tabulku pánů: https://docs.google.com/spreadsheets/d/1uFp6gwQVRI2MggyRNMP-jF5-l7yY4J3D48s-j0oxwsM/edit?usp=sharing
 Odkaz na díly: https://arduino-shop.cz/uzivatel/kosik.php?kosik%5B8%5D%5B1581%5D%5B0%5D=1&kosik%5B10%5D%5B832%5D%5B0%5D=1&kosik%5B11%5D%5B1160%5D%5B0%5D=1
 
-konzultovat napájení 
-konzultovat podávání
-ntp knihovna
-json datetime planner
-arduino json
-manipulace s json
- 
  
  https://arduinojson.org/
  https://embedgyan.wordpress.com/2020/07/06/esp32-ntp-client-server-get-date-and-time-arduino-ide/.
  https://randomnerdtutorials.com/esp32-http-get-post-arduino/
  
- Funguje mi vypis času pres konzoli, a blikani ledkou skrze web server pokusim se zprovoznit vypis času na web serveru a nasledně ho využít k ovládání
+
