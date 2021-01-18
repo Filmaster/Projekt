@@ -55,19 +55,21 @@ void eeprom()
   EEPROM.put(addr, data);
 }
 */
-void motorek(int pocetO, int rychlost)
+void motorek(int otacky)
 {
+  int y=0;
   const int stepsPerRevolution = 2048; //2048;
   Stepper myStepper = Stepper(stepsPerRevolution, 5, 19, 18, 21);
-  myStepper.setSpeed(rychlost);
+  myStepper.setSpeed(20);
 
   // otáčení se po směru hodinových ručiček
-  Serial.println("po směru ručiček");
-  myStepper.step(stepsPerRevolution);
-
+  //Serial.println("po směru ručiček");
+  //myStepper.step(stepsPerRevolution);
+for(y=0;y<otacky;y++){
   // otáčení se proti směru hodinových ručiček
   Serial.println("proti směru ručiček");
   myStepper.step(-stepsPerRevolution);
+}
 }
 void web()
 {
@@ -122,7 +124,7 @@ String getTime()
   Serial.println(time);
   return String(time);
 }
-
+//Funkce pro práci s časem
 void printLocalTime()
 {
   char sek[4];
@@ -167,41 +169,33 @@ void porovnani(String den, String cas)
       if (cas == data[x].hodiny)
       {
         //nahrazuje cykly if a else if  přijde mi jako elegantější řešení
-        switch (data[x].davka)
+       switch (data[inputIndex].davka)
         {
-          int rychlost;
           int otacky;
-          // jestliže uživatel zadal velikost dávky jedna provede se tento case
+          //jestliže dávka je rovna 1 otacky se nastavi na 5 a poslou se do funkce motorek
         case 1:
-          //nastavení proměnných pro funci, která ovládá motorek
-          rychlost = 20;
-          otacky = 1;
-          // poslání proměnných do funkce motorek a vyolání funcke motorek
-          motorek(otacky, rychlost);
+          otacky = 5;
+          motorek(otacky);
           Serial.println("Motorek jede!  1\n");
           break;
         case 2:
-          rychlost = 18;
-          otacky = 1;
-          motorek(otacky, rychlost);
+          otacky = 10;
+          motorek(otacky);
           Serial.println("Motorek jede!  2\n");
           break;
         case 3:
-          rychlost = 16;
-          otacky = 1;
-          motorek(otacky, rychlost);
+          otacky = 15;
+          motorek(otacky);
           Serial.println("Motorek jede!  3\n");
           break;
         case 4:
-          rychlost = 14;
-          otacky = 1;
-          motorek(otacky, rychlost);
+          otacky = 20;
+          motorek(otacky);
           Serial.println("Motorek jede!  4\n");
           break;
         case 5:
-          rychlost = 12;
-          otacky = 1;
-          motorek(otacky, rychlost);
+          otacky = 25;
+          motorek(otacky);
           Serial.println("Motorek jede!  5\n");
           break;
         }
@@ -249,14 +243,18 @@ void setup()
   pripojeni();
   web();
   server.begin();
+
+  //eeprom();
+  //EEPROM.get(addr, data);
+  // Serial.println(data[1].hodiny);
 }
 
 void loop()
 {
   porovnani(denP, casP);
   //delay(100);
-  /*nahrazení delay. milis() počítá milisekundy od začátku programu, které potom porovná s mikisekundama uloženýma
-  při posledním provedení a pokud jsou větší než mnou nastavený interval pak se funkce provede.*/
+  //nahrazení delay. milis() počítá milisekundy od začátku programu, které potom porovná s mikisekundama uloženýma
+  //při posledním provedení a pokud jsou větší než mnou nastavený interval pak se funkce provede.
   unsigned long currentMillis = millis();
   if (currentMillis - previousMillis > interval)
   {

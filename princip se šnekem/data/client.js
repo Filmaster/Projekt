@@ -88,7 +88,7 @@ $('#send').on('click', function () {
         console.log(ho);
         console.log(dd);
         console.log(da);
-        //zaslání proměnné ho na esp kde se díky funkci server.on zpracuje 
+        //zaslání proměnné  na esp kde se díky funkci server.on zpracuje 
         $.post("/hodiny", { hodiny: ho });
         $.post("/davka", { davka: dd });
         $.post("/datum", { datum: da });
