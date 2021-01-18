@@ -17,7 +17,6 @@ https://www.instructables.com/id/Automatic-Arduino-Powered-Pet-Feeder/
 https://medium.com/i-learn-esp32-and-you-should-too/6-the-esp32-automatic-feeder-a-design-88ebe7794375
 
 
-
 videoukázka: https://youtu.be/0Emey-71Spo
 
 
